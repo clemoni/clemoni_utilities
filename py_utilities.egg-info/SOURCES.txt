@@ -1,8 +1,0 @@
-LICENSE
-README.md
-py_utilities.py
-setup.py
-py_utilities.egg-info/PKG-INFO
-py_utilities.egg-info/SOURCES.txt
-py_utilities.egg-info/dependency_links.txt
-py_utilities.egg-info/top_level.txt
