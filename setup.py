@@ -1,14 +1,13 @@
 from setuptools import setup
 
-
 setup(
-    name='py_utilities',
-    version='1.0.0',
-
-    url='https://github.com/clemoni/py_utilities',
+    name='clemoni_utilities',
+    version='1.0.2',
+    url='https://github.com/clemoni/clemoni_utilities',
     author='Clement Liscoet',
     author_email='clement.liscoet@gmail.com',
     license='MIT',
-    package=['clem_utilities'],
-    py_modules=['py_utilities'],
+    description='A short utlitiy library for python',
+    packages=['utilities'],
+    py_modules=['tools']
 )
