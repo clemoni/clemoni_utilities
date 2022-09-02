@@ -9,11 +9,7 @@ from os.path import isfile, join
 import functools
 import sys
 import shutil
-import json
 from pathlib import Path
-
-def hello():
-    print('hello')
 
 
 def apply_fun_to_list(*, func, success_message):
@@ -167,6 +163,23 @@ def compose_f_input(g, f):
 #FILES AND FOLDER 
 
 def check_given_folder(path):
+    """Check if a path exist
+
+    Parameters
+    ----------
+    path : str
+        the path that wants to be used 
+
+    Returns
+    -------
+    Path
+        the given path
+
+    Raises
+    ------
+    ValueError
+        if not path given or path invalid raise error and sys.exit
+    """
     try:
 
         given_path=Path(path)
@@ -250,12 +263,11 @@ def get_file_object_from_dir_if_extension(dir_path, extension_test):
     output= [file for file in scandir(dir_path) if file.is_file and file.name.endswith(extension_test)]
     return output
 
+
 def get_the_latest_insert(fn_get_document):
     def wrapper(*args):
-        # print(args)
         return max(fn_get_document(*args), key=os.path.getctime)
     return wrapper
-
 
 
 def delete_all_files_from_dir(path):
@@ -287,6 +299,20 @@ def delete_all_folders_from_dir(path):
 
 
 def create_sub_directory(*, path_name, folder_name):
+    """Create a subdirection under a given path
+
+    Parameters
+    ----------
+    path_name : str
+        the parent dicterory
+    folder_name : str
+        the name of the sub_directory
+
+    Returns
+    -------
+    str
+        the path to the newly created subdirectory 
+    """
     sub_dir=path.join(path_name, folder_name)
     os.makedirs(sub_dir, exist_ok=True)
     return sub_dir 
@@ -294,26 +320,96 @@ def create_sub_directory(*, path_name, folder_name):
 @try_except_all
 def redirect_file(origin_path, export_path, renamed_file):
     shutil.copyfile(f"{origin_path}", f"{export_path}/{renamed_file}")
-    # print(f"file {renamed_file} redirected to {export_path}")
 
 @try_except_all
-def redirect_file_object(*, file_object, export_path, renamed_file=None):
+def redirect_file_object(file_object, dist, renamed_file=None):
+    """Redirect a file object (fn: get_file_object_from_dir)
+    to a given path 
+
+    If no name is given take by default the current name of the file 
+
+    Parameters
+    ----------
+    file_object : obj
+        the file object (name, path)
+    dis : str
+        the destination path the the file will be directed 
+    renamed_file : str, optional
+        the new name of the file , by default take the name attribut from file object
+    """
     renamed_file= file_object.name if renamed_file is None else renamed_file
-    shutil.copyfile(file_object.path, f"{export_path}/{renamed_file}")
+    shutil.copyfile(file_object.path, f"{dist}/{renamed_file}")
  
 
 @try_except_all
-def redirect_folder(folder_object, dst_path, renamed_folder=None):
+def redirect_folder(folder_object, dist, renamed_folder=None):
+    """Redirect a folder object (fn: get_folder_object_from_dir)
+    to a given destination
+
+    If not name is given the redirected folder will take the current folder
+    name by default
+
+    Parameters
+    ----------
+    folder_object : obj
+        the folder object (name, path)
+    dist : str
+        the destination folder
+    renamed_folder : _type_, optional
+        _description_, by default None
+    """
     renamed_folder= folder_object.name if renamed_folder is None else renamed_folder
-    shutil.copytree(folder_object.path, f"{dst_path}/{renamed_folder}")
+    shutil.copytree(folder_object.path, f"{dist}/{renamed_folder}")
 
 def get_folder_from_dir(dir_path):
+    """Get all the folder path 
+    from fiven path
+
+    Parameters
+    ----------
+    dir_path : str
+        path to locate the folders
+
+    Returns
+    -------
+    list
+        list of all available folders path
+    """
     return [folder.path for folder in scandir(dir_path) if folder.is_dir()]
 
 def get_folder_object_from_dir_if_name(dir_path, name_test):
+    """Get all folder object from 
+    given path if name match certain value
+
+    Parameters
+    ----------
+    dir_path : str
+        path to locate folders
+    name_test : str
+        the name check if exist
+    Returns
+    -------
+    list
+        the list of the folders avaiable at the given path matching a specifi value
+    """
+
     return [folder for folder in scandir(dir_path) if folder.is_dir() and name_test in folder.name]
 
 def get_folder_object_from_dir(dir_path):
+    """Get all the folder object 
+    from fiven path
+
+    Parameters
+    ----------
+    dir_path : str
+        path to locate the folders
+
+    Returns
+    -------
+    list
+        list of all available folders object
+
+    """
     return [folder for folder in scandir(dir_path) if folder.is_dir()]
 
 def is_subfolders(dir_path):
