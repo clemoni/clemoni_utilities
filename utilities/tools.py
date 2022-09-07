@@ -62,6 +62,17 @@ def if_regex_return_value(fn):
     return wrapper
 
 
+def exit_if_error(fn):
+    @functools.wraps(fn)
+    def wrapper(*args, **kwargs):
+        output = fn(*args, **kwargs)
+        if output==False:
+            sys.exit()
+        else:
+            return output
+    return wrapper
+
+
 def try_except_all(fn):
     """Run a function 
     inside a TRY except Exception
@@ -123,6 +134,27 @@ def if_fn_test_fn_1_else_fn_2(*, fn_1, fn_2, fn_test):
     return wrapper
 
 
+
+def if_type_test_bool(fn):
+    @functools.wraps(fn)
+    def wrapper(*args):
+        test, value_test, operator = fn(*args)
+        return {
+                '>': test > value_test,
+                '>=': test >= value_test,
+                '==': test == value_test, 
+                '<': test < value_test, 
+                '<=':test <= value_test, 
+                '!=':test != value_test
+        }.get(operator)
+    return wrapper
+
+def if_test_is_value_test_return_test_none(fn):
+    def wrapper(test, value_test, operator):
+        test_result=fn(test, value_test, operator)
+        return test if test_result else None
+    return wrapper
+
 # _________________________________________________
 # FUNCTIONAL PROGRAMMING 
 
@@ -162,6 +194,7 @@ def compose_f_input(g, f):
 # ______________________________________________________
 #FILES AND FOLDER 
 
+@exit_if_error
 def check_given_folder(path):
     """Check if a path exist
 
@@ -189,11 +222,11 @@ def check_given_folder(path):
       
     except IndexError:
             print(f'ERROR: No folder path has been given')
-            sys.exit()
+            
             
     except Exception as e:
         print(f'ERROR: {e}')
-        sys.exit()
+        return False
     
     else:
         return given_path
