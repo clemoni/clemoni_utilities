@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='clemoni_utilities',
-    version='1.0.3',
+    version='1.0.4',
     url='https://github.com/clemoni/clemoni_utilities',
     author='Clement Liscoet',
     author_email='clement.liscoet@gmail.com',

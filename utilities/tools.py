@@ -154,7 +154,16 @@ def if_test_is_value_test_return_test_none(fn):
         test_result=fn(test, value_test, operator)
         return test if test_result else None
     return wrapper
+    
+@if_type_test_bool
+def test_size_folder(folder_path, expected_size, operator):
+    return len(get_file_object_from_dir(folder_path)), expected_size, operator
 
+
+@if_type_test_bool
+def test_size_list(list, expected_size, operator):
+    return len(list), expected_size, operator
+    
 # _________________________________________________
 # FUNCTIONAL PROGRAMMING 
 
@@ -245,7 +254,7 @@ def get_file_from_dir(dir_path):
     list
         a list of files name
     """
-    return [file.name for file in scandir(dir_path) if file.is_file]
+    return [file.name for file in scandir(dir_path) if file.is_file() and file.name!='.DS_Store']
 
 def get_file_object_from_dir(dir_path):
     """ Retrieves all files from a given directory
@@ -260,7 +269,7 @@ def get_file_object_from_dir(dir_path):
     list
         a list of files name
     """
-    return [file for file in scandir(dir_path) if file.is_file]
+    return [file for file in scandir(dir_path) if file.is_file() and file.name!='.DS_Store']
 
 def get_file_from_dir_if_extension(dir_path, extension_test):
     """ Retrieves all files from a given directory
@@ -276,24 +285,7 @@ def get_file_from_dir_if_extension(dir_path, extension_test):
         a list of files name
     """
     
-    output= [file.path for file in scandir(dir_path) if file.is_file and file.name.endswith(extension_test)]
-    return output
-
-def get_file_object_from_dir_if_extension(dir_path, extension_test):
-    """ Retrieves all files from a given directory
-
-    Parameters
-    ----------
-    dir_path : str
-        the path of the directory
-
-    Returns
-    -------
-    list
-        a list of files name
-    """
-    
-    output= [file for file in scandir(dir_path) if file.is_file and file.name.endswith(extension_test)]
+    output= [file.path for file in scandir(dir_path) if file.is_file() and file.name.endswith(extension_test)]
     return output
 
 
