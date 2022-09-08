@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='clemoni_utilities',
-    version='1.0.4',
+    version='1.2.1',
     url='https://github.com/clemoni/clemoni_utilities',
     author='Clement Liscoet',
     author_email='clement.liscoet@gmail.com',
@@ -38,5 +38,10 @@ setup(
     - init_grab_key
     """,
     packages=['utilities'],
-    py_modules=['tools']
+    install_requires=['SQLAlchemy',
+                      'mysql-connector-python', 
+                      'pymysql',
+                      'pyyaml'                  
+                      ],
+    py_modules=['primary_tools', 'db_tools']
 )

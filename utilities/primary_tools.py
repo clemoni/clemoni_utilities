@@ -1,8 +1,8 @@
+'''
 # General function use in multiple script 
 #  like compose to for currying 
 #  or function create files, folder and so one 
-
-
+'''
 import os
 from os import listdir, path, scandir, remove, rmdir
 from os.path import isfile, join
@@ -288,6 +288,22 @@ def get_file_from_dir_if_extension(dir_path, extension_test):
     output= [file.path for file in scandir(dir_path) if file.is_file() and file.name.endswith(extension_test)]
     return output
 
+def get_file_object_from_dir_if_extension(dir_path, extension_test):
+    """ Retrieves all files from a given directory
+
+    Parameters
+    ----------
+    dir_path : str
+        the path of the directory
+
+    Returns
+    -------
+    list
+        a list of files name
+    """
+    
+    output= [file for file in scandir(dir_path) if file.is_file() and file.name.endswith(extension_test)]
+    return output
 
 def get_the_latest_insert(fn_get_document):
     def wrapper(*args):

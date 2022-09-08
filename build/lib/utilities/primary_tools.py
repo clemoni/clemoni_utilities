@@ -1,8 +1,8 @@
+'''
 # General function use in multiple script 
 #  like compose to for currying 
 #  or function create files, folder and so one 
-
-
+'''
 import os
 from os import listdir, path, scandir, remove, rmdir
 from os.path import isfile, join
