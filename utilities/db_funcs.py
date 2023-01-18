@@ -8,22 +8,35 @@ from os import getcwd
 from pathlib import Path
 import yaml
 from yaml.loader import SafeLoader
-from utilities import primary_tools as pt
+from utilities import utils_funcs 
 
+def r_compose_path_dynamically(file_name, limit_exploration=5, start_exploration=None, exploration_path=None, tested_path=None):
+    start_exploration=0 if start_exploration is None else start_exploration
+    exploration_path="/" if exploration_path is None else exploration_path 
+    tested_path=Path(file_name) if tested_path is None else tested_path
 
+    if tested_path.exists():
+        return tested_path
+
+    elif start_exploration<=limit_exploration:
+        exploration_path="/" if start_exploration==0 else f"{exploration_path}../"
+       
+        tested_path=Path(f"{getcwd()}{exploration_path}{file_name}")
+       
+        start_exploration+=1
+        return r_compose_path_dynamically(file_name, limit_exploration, start_exploration, exploration_path, tested_path)
+
+    elif start_exploration>=limit_exploration:
+        print(f"Error: Could not find path for file {file_name}")
+        return False
+        
 
 def get_yml_to_dic(yml_path):
     with open(yml_path, 'r') as f:
         data = yaml.load(f, Loader=SafeLoader)
     return data
 
-env_secret_path=Path(f"{getcwd()}/env_secret.yml")
-
-# because of IPYNB (UGLY)
-if env_secret_path.exists()==False:
-    env_secret_path=Path("../env_secret.yml")
-    if env_secret_path.exists()==False:
-        env_secret_path=Path("../../env_secret.yml")
+env_secret_path=r_compose_path_dynamically("env_secret.yml")   
 
 env_secret=get_yml_to_dic(env_secret_path)
 
@@ -66,7 +79,7 @@ def select_data_with_clause(query, value_dic):
 def get_stored_procedure(store_procedure):
     def wrapper(cursor, cnx):
         cursor.callproc(store_procedure)
-        return pt.flatten_list([result.fetchall() for result in cursor.stored_results()])
+        return utils_funcs.flatten_list([result.fetchall() for result in cursor.stored_results()])
 
     return wrapper
 

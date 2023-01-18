@@ -7,5 +7,13 @@ clemoni_utilities.egg-info/dependency_links.txt
 clemoni_utilities.egg-info/requires.txt
 clemoni_utilities.egg-info/top_level.txt
 utilities/__init__.py
-utilities/db_tools.py
-utilities/primary_tools.py
+utilities/add_package.py
+utilities/branching_funcs.py
+utilities/db_funcs.py
+utilities/files_system_funcs.py
+utilities/fp_funcs.py
+utilities/logs_handler.py
+utilities/re_funcs.py
+utilities/ui_funcs.py
+utilities/utils_funcs.py
+utilities/yml_funcs.py
