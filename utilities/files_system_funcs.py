@@ -5,7 +5,7 @@ import functools
 import sys
 import shutil
 from pathlib import Path
-import utilities.utils_funcs as utils_funcs
+from utilities import branching_funcs
 
 
 def compose(g, f):
@@ -198,11 +198,11 @@ def create_sub_directory(*, path_name, folder_name):
     makedirs(sub_dir, exist_ok=True)
     return sub_dir 
 
-@utils_funcs.try_except_all
+@branching_funcs.try_except_all
 def redirect_file(origin_path, export_path, renamed_file):
     shutil.copyfile(f"{origin_path}", f"{export_path}/{renamed_file}")
 
-@utils_funcs.try_except_all
+@branching_funcs.try_except_all
 def redirect_file_object(file_object, dist, renamed_file=None):
     """Redirect a file object (fn: get_file_object_from_dir)
     to a given path 
@@ -222,7 +222,7 @@ def redirect_file_object(file_object, dist, renamed_file=None):
     shutil.copyfile(file_object.path, f"{dist}/{renamed_file}")
  
 
-@utils_funcs.try_except_all
+@branching_funcs.try_except_all
 def redirect_folder(folder_object, dist, renamed_folder=None):
     """Redirect a folder object (fn: get_folder_object_from_dir)
     to a given destination
