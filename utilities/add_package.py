@@ -29,8 +29,8 @@ def compose(g, f):
     arg: argument to be given 
     in the second level of the function architecture.
     """
-    def h(arg):
-        return g(f(arg))
+    def h(*arg):
+        return g(f(*arg))
     return h
 
 def compose_3(h, g, f):
@@ -62,7 +62,7 @@ def handle_first_slash_path(path):
 # ________________________________________________________________
 
 # Add a other package function 
-def get_current_file():
+def get_current_file(current_file):
     """Return the folder 
     where the current file is located
 
@@ -71,9 +71,10 @@ def get_current_file():
     string
     The folder where the file is located. 
     """
-    return path.dirname(__file__)
+   
+    return Path(current_file).parent.resolve()
 
-def add_package_folder(path_to_package, fn_get_current_file=get_current_file):
+def add_package_folder(current_file, path_to_package, fn_get_current_file=get_current_file):
     """
     Create a path from the current folder location
 
@@ -82,7 +83,7 @@ def add_package_folder(path_to_package, fn_get_current_file=get_current_file):
     fn_get_current_file : function, optional
         the current folder where the file is located, by default get_current_file
     """
-    return path.join(fn_get_current_file(), path_to_package)
+    return path.join(fn_get_current_file(current_file), path_to_package)
     
 
 def append_package_to_path(package_path):
@@ -101,7 +102,10 @@ def handle_if_path_exist(test_path):
  
 
 
-def get_path_dynamically(folder_name, limit=6, start=None, checked_folder_name=None):
+def get_path_dynamically(current_file,folder_name, limit=10, start=None, checked_folder_name=None):
+
+
+   
     limit=6 if limit is None else limit
     start=0 if start is None else start
     checked_folder_name=handle_first_slash_path(folder_name) if checked_folder_name is None else checked_folder_name
@@ -109,21 +113,23 @@ def get_path_dynamically(folder_name, limit=6, start=None, checked_folder_name=N
 
     if start<=limit:
 
-        tested_path=add_package_folder(checked_folder_name)
+        tested_path=add_package_folder(current_file, checked_folder_name)
+
+        print(tested_path)
 
         if Path(tested_path).exists():
+            print(tested_path)
             return tested_path
         else:
             checked_folder_name=f"../{checked_folder_name}"
             
             start+=1
 
-            return get_path_dynamically(folder_name, limit, start, checked_folder_name)
+            return get_path_dynamically(current_file, folder_name, limit, start, checked_folder_name)
 
     else:
         print(f"Error: Could not find path for file {folder_name}")
         return False
-
 
 
 append_package_dynamically=compose(append_package_to_path, get_path_dynamically)
