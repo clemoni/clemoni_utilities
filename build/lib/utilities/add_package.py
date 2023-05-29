@@ -115,10 +115,8 @@ def get_path_dynamically(current_file,folder_name, limit=10, start=None, checked
 
         tested_path=add_package_folder(current_file, checked_folder_name)
 
-        print(tested_path)
-
         if Path(tested_path).exists():
-            print(tested_path)
+            
             return tested_path
         else:
             checked_folder_name=f"../{checked_folder_name}"
